@@ -53,14 +53,11 @@ async function run(){
 
         app.put('/makeadmin', async(req, res) => {
             const email = req.query.email;
-            console.log(email);
             const filter = {email: email};
-            console.log(filter);
             const updateDoc = {$set:{role: "admin"},};
             const options = { upsert: true };
             const result = await users.updateOne(filter, updateDoc, options);
             res.json(result);
-            
         })
 
     }

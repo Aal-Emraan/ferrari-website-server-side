@@ -19,18 +19,20 @@ async function run(){
 
         const database = client.db('Ferrari');
         const carsCollection = database.collection('allCars');
-
-        // const database = client.db("sample_mflix");
-        // const movies = database.collection("movies");
+        const users = database.collection('users');
+        const orders = database.collection('orders');
+        const reviews = database.collection('reviews');
 
         app.get('/getcars', async(req, res) => {
             const allCars = await carsCollection.find({}).toArray();
-            console.log(allCars);
             res.json(allCars);
         })
 
-        app.post('/addCars', async(req, res) => {
-
+        app.post('/addcar', async(req, res) => {
+            const car = req.body;
+            console.log(car);
+            const result = await carsCollection.insertOne(car);
+            res.json(result);
         })
 
     }

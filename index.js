@@ -23,16 +23,44 @@ async function run(){
         const orders = database.collection('orders');
         const reviews = database.collection('reviews');
 
+        // add user
+
+        app.post('/user', async(req, res) =>{
+            const user = req.body;
+            console.log(user);
+            const result = await users.insertOne(user);
+            console.log(result);
+            res.json(result);
+        })
+
+        // get all cars
+
         app.get('/getcars', async(req, res) => {
             const allCars = await carsCollection.find({}).toArray();
             res.json(allCars);
         })
+
+        // add new car
 
         app.post('/addcar', async(req, res) => {
             const car = req.body;
             console.log(car);
             const result = await carsCollection.insertOne(car);
             res.json(result);
+        })
+
+        // make admin
+
+        app.put('/makeadmin', async(req, res) => {
+            const email = req.query.email;
+            console.log(email);
+            const filter = {email: email};
+            console.log(filter);
+            const updateDoc = {$set:{role: "admin"},};
+            const options = { upsert: true };
+            const result = await users.updateOne(filter, updateDoc, options);
+            res.json(result);
+            
         })
 
     }

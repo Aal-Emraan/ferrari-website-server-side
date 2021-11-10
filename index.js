@@ -17,6 +17,22 @@ async function run(){
         await client.connect();
         console.log('database connected succesfully');
 
+        const database = client.db('Ferrari');
+        const carsCollection = database.collection('allCars');
+
+        // const database = client.db("sample_mflix");
+        // const movies = database.collection("movies");
+
+        app.get('/getcars', async(req, res) => {
+            const allCars = await carsCollection.find({}).toArray();
+            console.log(allCars);
+            res.json(allCars);
+        })
+
+        app.post('/addCars', async(req, res) => {
+
+        })
+
     }
     finally{
         // await client.close()
@@ -33,4 +49,4 @@ app.listen(port, ()=>{
 })
 
 
-// heroku link: https://aqueous-atoll-60031.herokuapp.com/
+// heroku link: https://safe-scrubland-04558.herokuapp.com/

@@ -27,9 +27,7 @@ async function run(){
 
         app.post('/user', async(req, res) =>{
             const user = req.body;
-            console.log(user);
             const result = await users.insertOne(user);
-            console.log(result);
             res.json(result);
         })
 
@@ -58,6 +56,18 @@ async function run(){
             const options = { upsert: true };
             const result = await users.updateOne(filter, updateDoc, options);
             res.json(result);
+        })
+
+        // check is admin or not
+        app.get('/isadmin/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = {email: email};
+            const result = await users.findOne(query);
+            let isAdmin = false;
+            if(result?.role === 'admin'){
+                isAdmin = true;
+            }
+            res.json({isAdmin: isAdmin});
         })
 
     }

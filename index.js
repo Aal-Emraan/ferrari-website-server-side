@@ -74,6 +74,39 @@ async function run(){
             res.json(myOrders);
         })
 
+        // get all orders
+
+        app.get('/allorders', async(req, res) => {
+            const allOrders = await orders.find({}).toArray();
+            res.json(allOrders);
+        })
+
+        // update status of order
+
+        app.put('/updatestatus/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const updateDoc = {$set:{status: 'Shipped'}};
+            const options = {upsert: true};
+            const update = await orders.updateOne(query,updateDoc,options);
+            res.json(update);
+        })
+
+        // add review
+
+        app.post('/review', async(req, res) => {
+            const review = req.body;
+            const result = await reviews.insertOne(review);
+            res.json(result);
+        })
+
+        // get all reviews
+
+        app.get('/allreviews', async(req, res) => {
+            const allReviews = await reviews.find({}).toArray();
+            res.json(allReviews);
+        })
+
         // cancel order
 
         app.delete('/deleteorder/:id', async(req, res) => {

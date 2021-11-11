@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const app = express();
@@ -38,6 +39,16 @@ async function run(){
             res.json(allCars);
         })
 
+        // get single car
+
+        app.get('/singlecar/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const car = await carsCollection.findOne(query);
+            // console.log(car);
+            res.json(car);
+        })
+
         // add new car
 
         app.post('/addcar', async(req, res) => {
@@ -45,6 +56,14 @@ async function run(){
             console.log(car);
             const result = await carsCollection.insertOne(car);
             res.json(result);
+        })
+
+        // make order
+
+        app.post('/order', async(req, res) => {
+            const order = req.body;
+            const placeOrder = await orders.insertOne(order);
+            res.json(placeOrder);
         })
 
         // make admin

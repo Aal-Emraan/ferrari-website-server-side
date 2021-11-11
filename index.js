@@ -66,6 +66,23 @@ async function run(){
             res.json(placeOrder);
         })
 
+        // get my orders
+
+        app.get('/myorders/:email', async(req, res) => {
+            const query = {email: req.params.email};
+            const myOrders = await orders.find(query).toArray();
+            res.json(myOrders);
+        })
+
+        // cancel order
+
+        app.delete('/deleteorder/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const result = await orders.deleteOne(query);
+            res.json(result)
+        })
+
         // make admin
 
         app.put('/makeadmin', async(req, res) => {

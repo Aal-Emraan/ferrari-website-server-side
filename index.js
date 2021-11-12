@@ -116,6 +116,15 @@ async function run(){
             res.json(result)
         })
 
+        // delete car
+
+        app.delete('/deletecar/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const deleted = await carsCollection.deleteOne(query);
+            res.json(deleted);
+        })
+
         // make admin
 
         app.put('/makeadmin', async(req, res) => {
